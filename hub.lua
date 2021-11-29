@@ -640,7 +640,6 @@ local function SSNUWF_fake_script()
 		print(t6load)
 	end)
 	
-	-- rgb
 	function zigzag(X) return math.acos(math.cos(X*math.pi))/math.pi end
 	counter = 0
 	while wait(0.1)do
