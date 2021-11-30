@@ -1,4 +1,5 @@
--- by aeg
+-- avg
+-- ver 1.3
 
 local theeverglade = Instance.new("ScreenGui")
 local header = Instance.new("Frame")
@@ -26,7 +27,6 @@ local Test3 = Instance.new("TextButton")
 local UIAspectRatioConstraint_11 = Instance.new("UIAspectRatioConstraint")
 local UIAspectRatioConstraint_12 = Instance.new("UIAspectRatioConstraint")
 
-
 theeverglade.Name = "theeverglade"
 theeverglade.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 theeverglade.ResetOnSpawn = false
@@ -36,7 +36,7 @@ header.Parent = theeverglade
 header.Active = true
 header.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 header.BorderSizePixel = 0
-header.Position = UDim2.new(0, 90, 0, 551)
+header.Position = UDim2.new(0, 91, 0, 91)
 header.Size = UDim2.new(0, 200, 0, 30)
 
 everglade.Name = "everglade"
@@ -209,82 +209,78 @@ UIAspectRatioConstraint_11.AspectRatio = 4.167
 UIAspectRatioConstraint_12.Parent = header
 UIAspectRatioConstraint_12.AspectRatio = 6.667
 
-local function JRVKW_fake_script()
+local function MZAV_fake_script()
 	local script = Instance.new('LocalScript', header)
 
-	local UserInputService = game:GetService("UserInputService")
-	
-	local gui = script.Parent
-	
-	local dragging
-	local dragInput
-	local dragStart
-	local startPos
-	
-	local function update(input)
-		local delta = input.Position - dragStart
-		gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	-- okay this is skidded alright
+	local UIS = game:GetService("UserInputService")
+	function dragify(Frame)
+	    dragToggle = nil
+	    local dragSpeed = 0.50
+	    dragInput = nil
+	    dragStart = nil
+	    local dragPos = nil
+	    function updateInput(input)
+	        local Delta = input.Position - dragStart
+	        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+	        game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.30), {Position = Position}):Play()
+	    end
+	    Frame.InputBegan:Connect(function(input)
+	        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+	            dragToggle = true
+	            dragStart = input.Position
+	            startPos = Frame.Position
+	            input.Changed:Connect(function()
+	                if input.UserInputState == Enum.UserInputState.End then
+	                    dragToggle = false
+	                end
+	            end)
+	        end
+	    end)
+	    Frame.InputChanged:Connect(function(input)
+	        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+	            dragInput = input
+	        end
+	    end)
+	    game:GetService("UserInputService").InputChanged:Connect(function(input)
+	        if input == dragInput and dragToggle then
+	            updateInput(input)
+	        end
+	    end)
 	end
 	
-	gui.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = true
-			dragStart = input.Position
-			startPos = gui.Position
-			
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragging = false
-				end
-			end)
-		end
-	end)
-	
-	gui.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			dragInput = input
-		end
-	end)
-	
-	UserInputService.InputChanged:Connect(function(input)
-		if input == dragInput and dragging then
-			update(input)
-		end
-	end)
+	dragify(script.Parent)
 end
-coroutine.wrap(JRVKW_fake_script)()
-local function SSNUWF_fake_script()
+coroutine.wrap(MZAV_fake_script)()
+local function TJVQI_fake_script()
 	local script = Instance.new('LocalScript', theeverglade)
+
+	-- by aeg
 	
 	--[[ LOCALS ]]--
-	-- main
-	local get = game:GetService("HttpService")
+	local get = game:GetService("HttpService") -- unnecessary after finding out roblox didnt disable loadstrings
 	local hdr = script.Parent.header
 	local mnu = script.Parent.header.menu
 	local spr = script.Parent.header.separator
 	local mnm = script.Parent.header.minimizer
 	
-	-- buttons
-	local t1 = script.Parent.header.menu.Test1
-	local t2 = script.Parent.header.menu.Test2
-	local t3 = script.Parent.header.menu.Test3
-	local t4 = script.Parent.header.menu.Test4
-	local t5 = script.Parent.header.menu.Test5
-	local t6 = script.Parent.header.menu.Test6
+	local t1 = script.Parent.header.menu.Test1 -- OPFinality
+	local t2 = script.Parent.header.menu.Test2 -- Infinite Yield
+	local t3 = script.Parent.header.menu.Test3 -- FilterMyAss
+	local t4 = script.Parent.header.menu.Test4 -- DaBaby Hub
+	local t5 = script.Parent.header.menu.Test5 -- FE Doll Script
+	local t6 = script.Parent.header.menu.Test6 -- Neko Script
 	
-	-- outputs (for testing after roblox decided to remove httpget)
 	local t1load = "OPFinality Loaded // everglade"
 	local t2load = "Infinite Yield Loaded // everglade"
 	local t3load = "FilterMyAss Loaded // everglade"
 	local t4load = "Dark Dex Explorer Loaded // everglade"
-	local t5load = "Aeg's Prison Life Gui Loaded // everglade"
+	local t5load = "Aeg's Prison Life Gui Couldn't Load // everglade"
 	local t6load = "Remote Spy Loaded // everglade"
 	
-	-- vals
 	local mnmval = true
 	
 	--[[ FUNCTIONS ]]--
-	-- minimizing
 	mnm.MouseButton1Click:Connect(function()
 		if mnmval then
 			mnmval = false
@@ -295,7 +291,6 @@ local function SSNUWF_fake_script()
 		end
 	end)
 	
-	-- loadstrings
 	t1.MouseButton1Click:Connect(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/PhoenixAceVFX/Roblox-Scripts/master/!%20%5BFE%5D%20OPFinality%20Gui%20%5BBEST%5D.lua"))()
 		print(t1load)
@@ -632,6 +627,10 @@ local function SSNUWF_fake_script()
 	end)
 	
 	t5.MouseButton1Click:Connect(function()
+		-- loadstring(game:HttpGet("https://raw.githubusercontent.com/aeg-eus/prison-life-gui/main/gui.lua"))
+		t5.Text = "didnt release yet"
+		wait(1)
+		t5.Text = "Aeg's PLG"
 		print(t5load)
 	end)
 	
@@ -648,4 +647,4 @@ local function SSNUWF_fake_script()
 	end
 	
 end
-coroutine.wrap(SSNUWF_fake_script)()
+coroutine.wrap(TJVQI_fake_script)()
